@@ -11,7 +11,7 @@ A tradução dirigida por sintaxe consiste em anexar regras ou fragmentos de có
 
 Abaixo estão as 9 etapas propostas para a evolução do nosso compilador. Conforme o progresso, os itens serão marcados.
 
-- [ ] 1. Um simples tradutor
+- [x] 1. Um simples tradutor
 - [ ] 2. Analisador léxico (Scanner)
 - [ ] 3. Refatorando o tradutor: incluindo o analisador léxico
 - [ ] 4. Suportando o tipo de token `number`
