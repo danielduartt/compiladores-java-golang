@@ -31,7 +31,6 @@ Como este é um projeto guiado pelo documento Estudo de Compiladores com Java e 
 
 ## 🛠️ Como Executar
 
-*(Adicione aqui as instruções básicas para compilar e rodar os projetos quando você criar os primeiros códigos)*
 
 **Para Java:**
 ```bash
