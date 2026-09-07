@@ -2,14 +2,20 @@ package main
 
 import (
 	"fmt"
-	"my_compiler/parser"
+	"my_compiler/lexer"
 )
 
 func main() {
-	input := "8+5-7*9"
-	fmt.Println("Expressão de entrada:", input)
-	fmt.Println("-------------------------")
+	input := "45 + 89 - 876 * 2"
+	fmt.Println("Analisando lexicamente:", input)
 
-	p := parser.NewParser([]byte(input))
-	p.Parse()
+	scanner := lexer.NewScanner([]byte(input))
+
+	for {
+		token := scanner.NextToken()
+		fmt.Println(token)
+		if token.Type == lexer.EOF {
+			break
+		}
+	}
 }
