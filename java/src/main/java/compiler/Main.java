@@ -1,15 +1,19 @@
 package compiler;
-
-import compiler.parser.Parser;
+import compiler.lexer.Scanner;
+import compiler.lexer.Token;
+import compiler.lexer.TokenType;
 
 public class Main {
-    public static void main(String[] args) throws Exception {
-        String input = "8+5-7*9";
+    public static void main(String[] args) {
+        String input = "45 + 89 - 876 * 2"; // Agora com espaços e números grandes!
+        System.out.println("Analisando lexicamente: " + input);
         
-        System.out.println("Expressão de entrada: " + input);
-        System.out.println("-------------------------");
+        Scanner scanner = new Scanner(input.getBytes());
+        Token token;
         
-        Parser p = new Parser(input.getBytes());
-        p.parse();
+        do {
+            token = scanner.nextToken();
+            System.out.println(token);
+        } while (token.type != TokenType.EOF);
     }
 }
