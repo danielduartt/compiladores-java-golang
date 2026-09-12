@@ -14,7 +14,7 @@ Abaixo estão as 9 etapas propostas para a evolução do nosso compilador. Confo
 - [x] 1. Um simples tradutor
 - [x] 2. Analisador léxico (Scanner)
 - [x] 3. Refatorando o tradutor: incluindo o analisador léxico
-- [ ] 4. Suportando o tipo de token `number`
+- [x] 4. Suportando o tipo de token `number`
 - [ ] 5. Atualizando o Parser para suportar `number`
 - [ ] 6. Atualizando o Scanner e Parser para suportar variáveis
 - [ ] 7. Incluindo comando de impressão
