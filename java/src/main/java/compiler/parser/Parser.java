@@ -7,17 +7,28 @@ import compiler.lexer.TokenType;
 public class Parser {
     private Scanner scan;
     private Token currentToken;
+    private StringBuilder out; // Acumulador da tradução
 
     public Parser(byte[] input) {
         this.scan = new Scanner(input);
         this.currentToken = scan.nextToken();
+        this.out = new StringBuilder();
+    }
+
+    // Novo método para capturar a string completa
+    public String output() {
+        return out.toString();
+    }
+
+    // Centraliza a emissão de comandos
+    private void emit(String command) {
+        out.append(command).append(System.lineSeparator());
     }
 
     private void nextToken() {
         this.currentToken = scan.nextToken();
     }
 
-    // Ponto de entrada atualizado para suportar múltiplos comandos
     public void parse() {
         statements();
     }
@@ -30,14 +41,12 @@ public class Parser {
         }
     }
 
-    // Regra: statements -> statement*
     private void statements() {
         while (currentToken.type != TokenType.EOF) {
             statement();
         }
     }
 
-    // Regra: statement -> printStatement | letStatement
     private void statement() {
         if (currentToken.type == TokenType.PRINT) {
             printStatement();
@@ -48,22 +57,20 @@ public class Parser {
         }
     }
 
-    // Regra: printStatement -> 'print' expr ';'
     private void printStatement() {
         match(TokenType.PRINT);
         expr();
-        System.out.println("print");
+        emit("print");
         match(TokenType.SEMICOLON);
     }
 
-    // Regra: letStatement -> 'let' identifier '=' expr ';'
     private void letStatement() {
         match(TokenType.LET);
         String id = currentToken.lexeme; 
         match(TokenType.IDENT);
         match(TokenType.EQ);
         expr();
-        System.out.println("pop " + id);
+        emit("pop " + id);
         match(TokenType.SEMICOLON);
     }
 
@@ -76,7 +83,7 @@ public class Parser {
         if (currentToken.type == TokenType.NUMBER) {
             number();
         } else if (currentToken.type == TokenType.IDENT) {
-            System.out.println("push " + currentToken.lexeme);
+            emit("push " + currentToken.lexeme);
             match(TokenType.IDENT);
         } else {
             throw new Error("syntax error");
@@ -84,7 +91,7 @@ public class Parser {
     }
 
     private void number() {
-        System.out.println("push " + currentToken.lexeme);
+        emit("push " + currentToken.lexeme);
         match(TokenType.NUMBER);
     }
 
@@ -92,22 +99,22 @@ public class Parser {
         if (currentToken.type == TokenType.PLUS) {
             match(TokenType.PLUS);
             term(); 
-            System.out.println("add");
+            emit("add");
             oper();
         } else if (currentToken.type == TokenType.MINUS) {
             match(TokenType.MINUS);
             term();
-            System.out.println("sub");
+            emit("sub");
             oper();
         } else if (currentToken.type == TokenType.MULT) {
             match(TokenType.MULT);
             term();
-            System.out.println("mult");
+            emit("mult");
             oper();
         } else if (currentToken.type == TokenType.DIV) {
             match(TokenType.DIV);
             term();
-            System.out.println("div");
+            emit("div");
             oper();
         }
     }
