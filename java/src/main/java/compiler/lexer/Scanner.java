@@ -7,11 +7,11 @@ public class Scanner {
     private byte[] input;
     private int current;
 
-    // Mapa para guardar as palavras reservadas da linguagem
     private static final Map<String, TokenType> keywords;
     static {
         keywords = new HashMap<>();
         keywords.put("let", TokenType.LET);
+        keywords.put("print", TokenType.PRINT); // Nova palavra reservada
     }
 
     public Scanner(byte[] input) {
@@ -59,8 +59,6 @@ public class Scanner {
         while (isAlphaNumeric(peek())) advance();
         
         String id = new String(input, start, current - start);
-        
-        // Verifica se o identificador lido é uma palavra reservada
         TokenType type = keywords.get(id);
         if (type == null) type = TokenType.IDENT;
         

@@ -17,9 +17,9 @@ public class Parser {
         this.currentToken = scan.nextToken();
     }
 
-    // O ponto de entrada agora é o comando 'let'
+    // Ponto de entrada atualizado para suportar múltiplos comandos
     public void parse() {
-        letStatement();
+        statements();
     }
 
     private void match(TokenType t) {
@@ -30,29 +30,48 @@ public class Parser {
         }
     }
 
+    // Regra: statements -> statement*
+    private void statements() {
+        while (currentToken.type != TokenType.EOF) {
+            statement();
+        }
+    }
+
+    // Regra: statement -> printStatement | letStatement
+    private void statement() {
+        if (currentToken.type == TokenType.PRINT) {
+            printStatement();
+        } else if (currentToken.type == TokenType.LET) {
+            letStatement();
+        } else {
+            throw new Error("syntax error");
+        }
+    }
+
+    // Regra: printStatement -> 'print' expr ';'
+    private void printStatement() {
+        match(TokenType.PRINT);
+        expr();
+        System.out.println("print");
+        match(TokenType.SEMICOLON);
+    }
+
     // Regra: letStatement -> 'let' identifier '=' expr ';'
     private void letStatement() {
         match(TokenType.LET);
-        
-        // Salva o nome da variável antes de consumir o token
         String id = currentToken.lexeme; 
         match(TokenType.IDENT);
-        
         match(TokenType.EQ);
         expr();
-        
-        // Ação semântica de atribuição (pop)
         System.out.println("pop " + id);
         match(TokenType.SEMICOLON);
     }
 
-    // Regra: expr -> term oper
     private void expr() {
         term();
         oper();
     }
 
-    // Regra: term -> number | identifier
     private void term() {
         if (currentToken.type == TokenType.NUMBER) {
             number();
@@ -69,11 +88,10 @@ public class Parser {
         match(TokenType.NUMBER);
     }
 
-    // Regra: oper -> + term oper | - term oper | * term oper | / term oper | ε
     private void oper() {
         if (currentToken.type == TokenType.PLUS) {
             match(TokenType.PLUS);
-            term(); // Atualizado de number() para term()
+            term(); 
             System.out.println("add");
             oper();
         } else if (currentToken.type == TokenType.MINUS) {
