@@ -17,11 +17,11 @@ public class Parser {
         this.currentToken = scan.nextToken();
     }
 
+    // O ponto de entrada agora é o comando 'let'
     public void parse() {
-        expr();
+        letStatement();
     }
 
-    // Agora o match verifica o tipo de token, não o lexema
     private void match(TokenType t) {
         if (currentToken.type == t) {
             nextToken();
@@ -30,38 +30,65 @@ public class Parser {
         }
     }
 
-    // Regra: expr -> number oper
+    // Regra: letStatement -> 'let' identifier '=' expr ';'
+    private void letStatement() {
+        match(TokenType.LET);
+        
+        // Salva o nome da variável antes de consumir o token
+        String id = currentToken.lexeme; 
+        match(TokenType.IDENT);
+        
+        match(TokenType.EQ);
+        expr();
+        
+        // Ação semântica de atribuição (pop)
+        System.out.println("pop " + id);
+        match(TokenType.SEMICOLON);
+    }
+
+    // Regra: expr -> term oper
     private void expr() {
-        number();
+        term();
         oper();
     }
 
-    // Método que substitui o antigo digit()
+    // Regra: term -> number | identifier
+    private void term() {
+        if (currentToken.type == TokenType.NUMBER) {
+            number();
+        } else if (currentToken.type == TokenType.IDENT) {
+            System.out.println("push " + currentToken.lexeme);
+            match(TokenType.IDENT);
+        } else {
+            throw new Error("syntax error");
+        }
+    }
+
     private void number() {
         System.out.println("push " + currentToken.lexeme);
         match(TokenType.NUMBER);
     }
 
-    // Regra oper validando pelos tipos de token
+    // Regra: oper -> + term oper | - term oper | * term oper | / term oper | ε
     private void oper() {
         if (currentToken.type == TokenType.PLUS) {
             match(TokenType.PLUS);
-            number();
+            term(); // Atualizado de number() para term()
             System.out.println("add");
             oper();
         } else if (currentToken.type == TokenType.MINUS) {
             match(TokenType.MINUS);
-            number();
+            term();
             System.out.println("sub");
             oper();
         } else if (currentToken.type == TokenType.MULT) {
             match(TokenType.MULT);
-            number();
+            term();
             System.out.println("mult");
             oper();
         } else if (currentToken.type == TokenType.DIV) {
             match(TokenType.DIV);
-            number();
+            term();
             System.out.println("div");
             oper();
         }

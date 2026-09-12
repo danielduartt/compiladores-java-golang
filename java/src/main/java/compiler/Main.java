@@ -3,9 +3,8 @@ import compiler.parser.Parser;
 
 public class Main {
     public static void main(String[] args) {
-        // Expressão contendo espaços para testar o skipWhitespace
-        String input = "45  + 89   -       876 * 2";
-        System.out.println("Analisando e traduzindo: " + input);
+        String input = "let a = 42 + 5 - 8;";
+        System.out.println("Executando o comando: " + input);
         System.out.println("-------------------------");
         
         Parser p = new Parser(input.getBytes());
