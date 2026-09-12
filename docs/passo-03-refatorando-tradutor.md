@@ -18,7 +18,6 @@ Neste passo, mantivemos o objetivo principal de produzir a notação pós-fixada
 2.  **`Parser` (Java/Go):** Ficou mais limpo e focado estritamente em checar a validade gramatical e acionar a tradução. 
 
 ## 4. Anotações Pessoais / Dúvidas
-> *(Use este espaço para anotar detalhes da sua implementação ou dúvidas das aulas)*
 - [x] Remover os métodos `peek` e variáveis de controle de leitura de dentro do Parser.
 - [x] Fazer o Parser inicializar o Scanner em seu construtor.
 - [x] Confirmar que a tradução pós-fixada de `8+5-7*9` continua imprimindo exatamente o mesmo resultado do Passo 1.

@@ -1,17 +1,14 @@
 package compiler;
-import compiler.lexer.Scanner;
+import compiler.parser.Parser;
 
 public class Main {
     public static void main(String[] args) {
-        String input = "289-85+0+69";
-        Scanner scan = new Scanner(input.getBytes());
+        // Expressão contendo espaços para testar o skipWhitespace
+        String input = "45  + 89   -       876 * 2";
+        System.out.println("Analisando e traduzindo: " + input);
+        System.out.println("-------------------------");
         
-        System.out.println(scan.nextToken());
-        System.out.println(scan.nextToken());
-        System.out.println(scan.nextToken());
-        System.out.println(scan.nextToken());
-        System.out.println(scan.nextToken());
-        System.out.println(scan.nextToken());
-        System.out.println(scan.nextToken());
+        Parser p = new Parser(input.getBytes());
+        p.parse();
     }
 }

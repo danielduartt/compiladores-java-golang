@@ -23,6 +23,15 @@ public class Scanner {
         }
     }
 
+    // Novo método para ignorar espaços em branco
+    private void skipWhitespace() {
+        char ch = peek();
+        while (ch == ' ' || ch == '\r' || ch == '\t' || ch == '\n') {
+            advance();
+            ch = peek();
+        }
+    }
+
     private Token number() {
         int start = current;
         while (Character.isDigit(peek())) {
@@ -33,6 +42,9 @@ public class Scanner {
     }
 
     public Token nextToken() {
+        // Chamada obrigatória no início para pular os espaços
+        skipWhitespace();
+        
         char ch = peek();
         
         if (ch == '0') {
